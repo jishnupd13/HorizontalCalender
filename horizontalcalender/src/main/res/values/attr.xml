@@ -2,6 +2,7 @@
 <resources>
 
     <declare-styleable name="HorizontalCalenderView">
+        <attr name="currentDate" format="string"/>
     </declare-styleable>
 
 </resources>

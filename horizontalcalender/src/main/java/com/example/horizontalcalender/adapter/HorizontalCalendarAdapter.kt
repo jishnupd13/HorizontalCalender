@@ -14,7 +14,11 @@ import com.example.horizontalcalender.model.DayModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HorizontalCalendarAdapter(private val onDateSelected:(date:Date)->Unit) : PagedListAdapter<DayModel, HorizontalCalendarAdapter.HorizontalCalenderViewHolder>(DIFF_CALLBACK){
+class HorizontalCalendarAdapter(
+    private val onDateSelected:(date:Date)->Unit,
+    private val onDateChanged:(date:Date)->Unit
+) : PagedListAdapter<DayModel, HorizontalCalendarAdapter.HorizontalCalenderViewHolder>(DIFF_CALLBACK){
+
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DayModel>() {
@@ -23,7 +27,7 @@ class HorizontalCalendarAdapter(private val onDateSelected:(date:Date)->Unit) : 
             }
 
             override fun areContentsTheSame(oldItem: DayModel, newItem: DayModel): Boolean {
-                return oldItem.date == newItem.date
+                return oldItem.date.time == newItem.date.time
             }
         }
     }
@@ -66,9 +70,10 @@ class HorizontalCalendarAdapter(private val onDateSelected:(date:Date)->Unit) : 
 
     override fun onBindViewHolder(holder: HorizontalCalenderViewHolder, position: Int) {
         getItem(position)?.let { day ->
+            Log.e("position","$position")
+            onDateChanged(day.date)
             holder.onBind(day)
             holder.itemView.setOnClickListener {
-                Log.e("position","position $position")
                 onSelect(day)
             }
         }

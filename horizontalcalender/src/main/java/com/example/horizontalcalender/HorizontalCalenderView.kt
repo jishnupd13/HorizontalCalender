@@ -1,18 +1,19 @@
 package com.example.horizontalcalender
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
-import androidx.paging.PagedList
+import android.widget.TextView
 import androidx.paging.toLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
 import com.example.horizontalcalender.adapter.HorizontalCalendarAdapter
-import com.example.horizontalcalender.model.DayModel
 import com.example.horizontalcalender.paging.HorizontalCalendarFactory
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -23,19 +24,25 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
     private var horizontalCalendarAdapter:HorizontalCalendarAdapter
     private var  onDateClick: ((Date)->Unit)? =null
     private var centerSmoothScroller:CenterSmoothScroller?=null
+    private var textCurrentDate:TextView
 
     init {
         centerSmoothScroller = CenterSmoothScroller(context)
         inflate(context, R.layout.layout_horizontal_calender, this)
         recyclerviewHorizontalCalender = findViewById(R.id.recyclerViewHorizontalCalender)
+        textCurrentDate = findViewById(R.id.textDate)
+        textCurrentDate.text = fetchCurrentDate(Calendar.getInstance().time)
         val attributes = context.obtainStyledAttributes(attrs, R.styleable.HorizontalCalenderView)
-        horizontalCalendarAdapter = HorizontalCalendarAdapter {
+        horizontalCalendarAdapter = HorizontalCalendarAdapter({
             onDateClick?.let { it1 -> it1(it) }
-        }
+        },{
+            textCurrentDate.text = fetchCurrentDate(it)
+        })
         recyclerviewHorizontalCalender.addItemDecoration(HorizontalCalenderViewItemDecorator(8))
         recyclerviewHorizontalCalender.apply {
             adapter = horizontalCalendarAdapter
         }
+
         observeHorizontalCalenderView()
         attributes.recycle()
     }
@@ -43,10 +50,8 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
     private fun observeHorizontalCalenderView(){
         dataSource.toLiveData(30).observe(context.getLifecycleOwner()){
             horizontalCalendarAdapter.submitList(it)
-            Log.e("hii","hii")
         }
     }
-
 
     fun setDateChangeListener( onDateClick:(Date)->Unit){
       this.onDateClick = onDateClick
@@ -54,7 +59,6 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
 
     //first component will be year and second component will be the month
     fun invalidate( datePair:Pair<Int,Int>){
-
         val year = datePair.first
         val month = datePair.second
         val cal = Calendar.getInstance()
@@ -62,8 +66,13 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
         cal.set(Calendar.YEAR,year)
         cal.set(Calendar.DAY_OF_MONTH,1)
         dataSource.date = cal.time
-        dataSource.refresh()
         horizontalCalendarAdapter.submitList(null)
+        dataSource.refresh()
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun fetchCurrentDate(date: Date?): String = with(date ?: Date()) {
+        SimpleDateFormat("MMM yyyy").format(this)
     }
 }
 
