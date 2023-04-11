@@ -23,11 +23,11 @@ class HorizontalCalendarAdapter(
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<DayModel>() {
             override fun areItemsTheSame(oldItem: DayModel, newItem: DayModel): Boolean {
-                return oldItem == newItem
+                return oldItem.equals( newItem)
             }
 
             override fun areContentsTheSame(oldItem: DayModel, newItem: DayModel): Boolean {
-                return oldItem.date.time == newItem.date.time
+                return oldItem.equals(newItem)
             }
         }
     }
@@ -70,7 +70,6 @@ class HorizontalCalendarAdapter(
 
     override fun onBindViewHolder(holder: HorizontalCalenderViewHolder, position: Int) {
         getItem(position)?.let { day ->
-            Log.e("position","$position")
             onDateChanged(day.date)
             holder.onBind(day)
             holder.itemView.setOnClickListener {
