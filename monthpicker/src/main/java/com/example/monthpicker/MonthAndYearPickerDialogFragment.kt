@@ -37,7 +37,7 @@ class MonthAndYearPickerDialogFragment(val onSelectMonthAndYear:(item:Pair<Month
             binding.textYear.text = it.toString()
             year = it
         },{
-            binding.textMonth.text = it.month.uppercase()
+            binding.textMonth.text = it.month
             month = it
             lifecycleScope.launch {
                 delay(300)

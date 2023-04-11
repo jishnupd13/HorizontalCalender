@@ -10,7 +10,7 @@
         android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
+        android:background="@color/purple_500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -80,7 +80,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/textOk"
         app:layout_constraintEnd_toStartOf="@+id/textOk"
         android:padding="10dp"
-        android:textColor="@color/primary"
+        android:textColor="@color/purple_500"
 
         />
 
@@ -96,7 +96,7 @@
         android:paddingBottom="10dp"
         android:text="Ok"
         android:textAllCaps="true"
-        android:textColor="@color/primary"
+        android:textColor="@color/purple_500"
         android:layout_marginBottom="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

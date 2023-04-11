@@ -33,7 +33,7 @@ class HorizontalCalendarAdapter(private val onDateSelected:(date:Date)->Unit) : 
     ): RecyclerView.ViewHolder(binding.root){
 
         fun onBind(dayModel: DayModel) = binding.apply {
-            textDayName.text = fetchDateWeek(dayModel.date).take(1).uppercase()
+            textDayName.text = fetchDateWeek(dayModel.date).take(3)
             textDayValue.text = fetchDay(dayModel.date)
 
             if(dayModel.isSelected){

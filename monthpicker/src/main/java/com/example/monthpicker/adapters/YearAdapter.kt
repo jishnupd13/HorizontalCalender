@@ -35,7 +35,7 @@ class YearAdapter(val onYearSelected:(year:Int)->Unit) : Adapter<YearAdapter.Yea
         holder.binding.textYear.text = item.year.toString()
         if(item.isSelected) {
             holder.binding.textYear.setTextColor(ContextCompat.getColor(holder.binding.textYear.context,
-                R.color.primary))
+                R.color.purple_500))
             holder.binding.textYear.textSize = 28f
             animateChangeBoundTransition(holder.binding.root)
         }else{

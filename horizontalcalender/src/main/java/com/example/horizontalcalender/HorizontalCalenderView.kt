@@ -42,9 +42,7 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
 
     private fun observeHorizontalCalenderView(){
         dataSource.toLiveData(30).observe(context.getLifecycleOwner()){
-            horizontalCalendarAdapter.submitList(null)
             horizontalCalendarAdapter.submitList(it)
-            horizontalCalendarAdapter
             Log.e("hii","hii")
         }
     }
@@ -59,13 +57,13 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
 
         val year = datePair.first
         val month = datePair.second
-
         val cal = Calendar.getInstance()
-        cal.set(Calendar.MONTH,month-1)
+        cal.set(Calendar.MONTH,month)
         cal.set(Calendar.YEAR,year)
         cal.set(Calendar.DAY_OF_MONTH,1)
         dataSource.date = cal.time
         dataSource.refresh()
+        horizontalCalendarAdapter.submitList(null)
     }
 }
 
