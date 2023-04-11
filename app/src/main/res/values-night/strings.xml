@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="click">Click</string>
+    <string name="date_picker">Date Picker</string>
+    <string name="date_selected">Date selected</string>
+</resources>
