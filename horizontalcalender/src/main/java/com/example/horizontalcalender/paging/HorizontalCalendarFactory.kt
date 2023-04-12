@@ -16,7 +16,7 @@ class HorizontalCalendarFactory() : DataSource.Factory<Int, DayModel>() {
     override fun create(): DataSource<Int, DayModel> {
         dataSource =  HorizontalCalendarSource(today = date)
         dataSourceLiveData.postValue(dataSource)
-        return  dataSource
+        return dataSource
     }
 
     fun refresh() {

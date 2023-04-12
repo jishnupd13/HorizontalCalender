@@ -17,7 +17,7 @@ import java.util.*
 class HorizontalCalendarAdapter(
     private val onDateSelected:(date:Date)->Unit,
     private val onDateChanged:(date:Date)->Unit
-) : PagedListAdapter<DayModel, HorizontalCalendarAdapter.HorizontalCalenderViewHolder>(DIFF_CALLBACK){
+) : PagedListAdapter<DayModel, HorizontalCalendarAdapter.HorizontalCalenderViewHolder>(DIFF_CALLBACK) {
 
 
     companion object {
@@ -31,6 +31,7 @@ class HorizontalCalendarAdapter(
             }
         }
     }
+
 
     class HorizontalCalenderViewHolder(
         private val binding: CellDaysBinding

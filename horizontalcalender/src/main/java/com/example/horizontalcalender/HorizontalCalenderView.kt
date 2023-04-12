@@ -4,9 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Looper
-import android.transition.ChangeBounds
-import android.transition.TransitionManager
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -54,11 +53,22 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
     private fun observeHorizontalCalenderView(){
         dataSource.toLiveData(30).observe(context.getLifecycleOwner()){
             textCurrentDate.visibility = View.INVISIBLE
-            android.os.Handler(Looper.getMainLooper()).postDelayed({
-                horizontalCalendarAdapter.submitList(it)
-            }, 80)
+            horizontalCalendarAdapter.submitList(it)
             android.os.Handler(Looper.getMainLooper()).postDelayed({
                 textCurrentDate.visibility = View.VISIBLE
+                val smoothScroller = CenterSmoothScroller(context)
+                var targetPosition = -1
+                    horizontalCalendarAdapter.currentList?.map {
+                    if(it.isSelected){
+                        targetPosition =  horizontalCalendarAdapter.currentList?.indexOf(it)?:-1
+                        return@map
+                    }
+                }
+                if(targetPosition!= -1){
+                    smoothScroller.targetPosition = targetPosition
+                    recyclerviewHorizontalCalender.layoutManager?.startSmoothScroll(smoothScroller)
+                }
+
             }, 800)
         }
     }
@@ -70,6 +80,7 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
     //first component will be year and second component will be the month
     @SuppressLint("NotifyDataSetChanged")
     fun invalidate(datePair:Pair<Int,Int>){
+
         val year = datePair.first
         val month = datePair.second
         val cal = Calendar.getInstance()
@@ -77,8 +88,7 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
         cal.set(Calendar.YEAR,year)
         cal.set(Calendar.DAY_OF_MONTH,1)
         dataSource.date = cal.time
-
-       horizontalCalendarAdapter.submitList(null)
+        horizontalCalendarAdapter.submitList(null)
         dataSource.refresh()
     }
 
