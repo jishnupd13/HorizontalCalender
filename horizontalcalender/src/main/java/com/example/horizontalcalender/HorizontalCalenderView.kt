@@ -27,6 +27,7 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
     private var centerSmoothScroller:CenterSmoothScroller?=null
     private var textCurrentDate:TextView
     private var root:LinearLayout
+    private var initialLoading = false
 
     init {
         centerSmoothScroller = CenterSmoothScroller(context)
@@ -55,21 +56,25 @@ class HorizontalCalenderView(context: Context, attrs: AttributeSet): LinearLayou
             textCurrentDate.visibility = View.INVISIBLE
             horizontalCalendarAdapter.submitList(it)
             android.os.Handler(Looper.getMainLooper()).postDelayed({
-                textCurrentDate.visibility = View.VISIBLE
-                val smoothScroller = CenterSmoothScroller(context)
-                var targetPosition = -1
+                if(!initialLoading){
+                    textCurrentDate.visibility = View.VISIBLE
+                    val smoothScroller = CenterSmoothScroller(context)
+                    var targetPosition = -1
                     horizontalCalendarAdapter.currentList?.map {
-                    if(it.isSelected){
-                        targetPosition =  horizontalCalendarAdapter.currentList?.indexOf(it)?:-1
-                        return@map
+                        if(it.isSelected){
+                            targetPosition =  horizontalCalendarAdapter.currentList?.indexOf(it)?:-1
+                            return@map
+                        }
                     }
-                }
-                if(targetPosition!= -1){
-                    smoothScroller.targetPosition = targetPosition
-                    recyclerviewHorizontalCalender.layoutManager?.startSmoothScroll(smoothScroller)
-                }
+                    if(targetPosition!= -1){
+                        smoothScroller.targetPosition = targetPosition
+                        recyclerviewHorizontalCalender.layoutManager?.startSmoothScroll(smoothScroller)
+                    }
+                }else
+                    initialLoading = false
 
-            }, 800)
+
+            }, 1000)
         }
     }
 
